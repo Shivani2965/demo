@@ -1,0 +1,6 @@
+{
+  "name": "AI IT Helpdesk Copilot",
+  "description": "Smart Helpdesk Ticketing Solution for IT Services (SIH25195) with role-based portals for Employees, IT Engineers, and Admins.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

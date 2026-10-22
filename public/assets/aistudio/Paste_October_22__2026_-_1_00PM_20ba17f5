@@ -1,0 +1,635 @@
+AI IT Help Desk Copilot — UI/UX Design Specification
+1. Product Overview
+AI IT Help Desk Copilot is an intelligent IT support web application that helps employees troubleshoot technical problems, find verified solutions, access IT documentation, and raise support tickets when an issue requires assistance from an IT engineer.
+
+The system combines three core technologies:
+
+Natural Language Processing (NLP): Understands the employee's message and identifies the issue category, intent, and relevant technical details.
+Retrieval-Augmented Generation (RAG): Retrieves relevant information from verified knowledge base articles, IT documentation, troubleshooting guides, and runbooks.
+Large Language Model (LLM): Generates clear, contextual responses based on the retrieved information and provides step-by-step troubleshooting guidance.
+The application should feel like a polished enterprise IT product rather than a generic AI chatbot or a complex monitoring dashboard. Its interface should make technical support approachable for employees while retaining the professional identity of an enterprise IT workspace.
+
+2. Design Direction and Visual Identity
+The entire application will follow the visual language of the provided reference screenshot.
+
+The design combines a warm ivory workspace, a near-black navigation sidebar, soft beige conversation panels, pill-shaped controls, and restrained accent colours. It should look clean, sophisticated, friendly, and consistent across every screen.
+
+The reference screenshot should be treated as the primary visual specification. New screens must reuse its layout patterns, spacing, typography, colours, and component styles rather than introducing a different visual direction.
+
+2.1 Colour palette
+Use the following palette consistently throughout the application.
+
+Element	Colour	Purpose
+Main workspace	#FFFAED	Warm ivory background
+Sidebar	#1B1B1B	Distinctive dark navigation
+Primary text	#171717	Headings and important content
+Secondary text	#77736D	Descriptions, timestamps and metadata
+Conversation panels	#F3EEDF	AI response containers
+User message panels	#F7F2E4	Employee messages
+Primary buttons	#080808	High-contrast actions
+Button text	#FFFFFF	Primary action labels
+Borders and dividers	#EDE6D6	Subtle separation
+Lavender accent	#EBDDF5	Assistant identity and secondary emphasis
+Pink accent	#F8D2E8	Selected navigation and intent indicators
+Yellow accent	#F6E58D	Step numbers and highlights
+Success accent	#DDECCB	Resolved states and successful actions
+Accent colours should be used sparingly. Most of the interface should remain cream, black, white, and muted beige. Avoid introducing bright blue, neon green, purple gradients, or multiple competing accent colours.
+
+2.2 Typography
+Use a modern, rounded sans-serif font such as Plus Jakarta Sans throughout the application.
+
+Page titles should be bold, prominent, and clean.
+Section headings should use medium or semibold weights.
+Body text should be comfortable to read, with sufficient line spacing.
+Timestamps, model information, confidence values, and source labels should be smaller and muted.
+Technical commands should use a monospace font.
+Avoid excessive uppercase headings, decorative serif fonts, oversized typography, and unnecessary text effects.
+
+2.3 Component styling
+All screens should use the following design conventions:
+
+Rounded navigation sidebar with generous padding.
+Large, softly rounded conversation panels.
+White or cream pill-shaped buttons.
+Black primary action buttons with white text.
+Thin, low-contrast borders instead of heavy shadows.
+Circular icons and compact status indicators.
+Consistent spacing between sections and cards.
+Small, unobtrusive icons from a single icon library.
+Minimal use of gradients and glow effects.
+The interface should rely on spacing, alignment, contrast, and hierarchy rather than decorative elements to create visual interest.
+
+3. Global Application Layout
+The application will use a persistent left sidebar and a main content workspace.
+
+3.1 Sidebar
+The sidebar should visually match the reference image: a near-black panel with generously rounded corners, positioned slightly inside the viewport with a subtle surrounding margin.
+
+It should remain consistent across all employee-facing screens.
+
+Brand section
+
+At the top of the sidebar, display:
+
+A circular pink or lavender lightning-style icon.
+The product name, PowerGrid Copilot.
+A small secondary label, such as IT Support.
+The logo and product name establish the identity of the application. Use the same branding across every page.
+
+General navigation
+
+AI Assistant
+My Tickets
+Knowledge Base
+Chat History
+Tools navigation
+
+Create Ticket
+Analytics, if available to the employee role
+Settings
+The sidebar should separate these groups using small, muted section labels.
+
+Active navigation state
+
+The currently selected item should appear inside a white rounded pill with dark text. Its icon should remain aligned to the left, and a small pink indicator or notification badge may appear on the right.
+
+Inactive items should use muted light-grey text and simple outlined icons.
+
+Bottom section
+
+Place the Logout action at the bottom of the sidebar. Keep it visually separated from the main navigation.
+
+The sidebar should support collapsing on smaller screens or when users need additional workspace. When collapsed, show icons with tooltips and preserve the same dark visual identity.
+
+3.2 Top navigation bar
+The main workspace should have a simple top navigation row.
+
+It should include:
+
+A wide, rounded search field with the placeholder “Ask Copilot or search records...”
+Small search-scope filters for Tickets, Knowledge Base, and Runbooks.
+A notification icon.
+A preferences or settings icon.
+A circular user profile icon.
+The search bar should use a white background, subtle borders, and muted placeholder text.
+
+Keep this header minimal. Avoid large breadcrumbs, multiple navigation bars, or unnecessary system-status dashboards.
+
+3.3 Main content area
+The main workspace should use a warm ivory background with comfortable horizontal spacing.
+
+Content should align to a consistent central grid. On the AI Assistant page, the conversation can occupy most of the available width while retaining sufficient space around the edges.
+
+Use soft beige surfaces to group related information. Avoid excessive nested cards, complicated column layouts, and dense technical metadata.
+
+4. Employee AI Assistant Screen
+This is the primary screen of the application and the first screen an employee sees after logging in.
+
+The screen should immediately communicate that employees can describe their IT problems in natural language and receive guided troubleshooting assistance.
+
+The entire experience should be conversational, simple, and focused on resolving the issue.
+
+4.1 Page heading
+At the top of the workspace, display a small status pill indicating that the assistant is active and grounded in approved IT documentation.
+
+Example:
+
+“Active & Grounded to Verified IT Knowledge”
+
+Beside it, show a compact session identifier if required.
+
+Below the status row, display:
+
+AI Assistant Copilot
+
+Supporting description:
+
+“Autonomous IT troubleshooting and verified engineering workflow remediation.”
+
+Place two actions on the right side of the heading:
+
+Export Transcript
+New Chat
+Use a black pill-shaped button for the primary action and a white pill-shaped button for secondary actions.
+
+Keep the page heading spacious and separated from the conversation by a subtle horizontal divider.
+
+4.2 Employee message
+Employee messages should appear in soft cream-beige containers with rounded corners.
+
+Each message should include:
+
+A circular employee avatar.
+Employee name.
+Message timestamp.
+The employee's original message.
+The employee's message should be displayed in natural language, preserving important technical details such as operating systems, error codes, application names, and affected services.
+
+For example:
+
+“After updating my laptop, the VPN keeps disconnecting and I can no longer access the internal ERP portal.”
+
+The message should remain easy to scan. Do not place unnecessary metadata or technical badges inside the employee message.
+
+4.3 AI response panel
+AI responses should appear in larger, softly rounded beige panels.
+
+Each response should contain:
+
+A small circular assistant icon in a muted lavender or mauve colour.
+The assistant name, PowerGrid Copilot.
+A compact model or response label where useful.
+A timestamp.
+Optional feedback actions, such as helpful and not helpful.
+The assistant should explain the likely issue in simple language before presenting the troubleshooting steps.
+
+For example:
+
+“I found a likely cause of the VPN connection problem. Let's try the following steps to restore your connection.”
+
+The response should be readable as a conversation, not presented as a technical report.
+
+4.4 Troubleshooting steps
+Troubleshooting instructions are the most important component of the AI response.
+
+Present each recommended step as a separate white, rounded card inside the beige response panel.
+
+Each step should include:
+
+A numbered circular badge.
+A short action-oriented heading.
+A one- or two-sentence explanation.
+An optional status label.
+Example:
+
+1. Refresh the DNS cache
+
+Clear outdated network information that may be interfering with the connection.
+
+2. Check the VPN configuration
+
+Verify the relevant connection settings and follow the approved troubleshooting instructions.
+
+3. Reconnect to the gateway
+
+Reconnect to the VPN and verify whether the internal application is accessible.
+
+Use yellow, pink, or neutral number badges to distinguish steps without making the interface visually noisy.
+
+If a step requires a terminal command, display the command in a dark, rounded code block. Include a Copy button that copies the exact command to the clipboard.
+
+Commands must be specific to the relevant operating system and verified against the approved knowledge base before being recommended.
+
+4.5 Verified knowledge sources
+Every grounded response should identify the documentation supporting its recommendation.
+
+At the bottom of the AI response panel, show a compact source row containing:
+
+Source label, such as “Verified Reference”.
+Knowledge base article ID.
+Article title.
+Optional match or relevance indicator.
+For example:
+
+“Verified Reference · KB-1024 · VPN Troubleshooting Guide”
+
+The source should be clickable and open the corresponding knowledge base article.
+
+Use small, neutral pill-shaped elements. Do not display lengthy retrieval scores, embedding information, vector database details, or other implementation metadata to employees.
+
+4.6 Response actions
+At the bottom of each response, provide clear actions based on the state of the issue.
+
+This Solved It: Marks the issue as resolved and records the outcome.
+Escalate to Engineer: Starts the ticket creation or escalation flow.
+If the employee confirms that the issue is resolved, ask for confirmation when necessary, record the resolution outcome, and offer an optional satisfaction rating.
+
+If the issue remains unresolved, allow the employee to continue the conversation or create a support ticket.
+
+These actions should be visually distinct but not equally prominent. Use a black primary button for the main recommended action and a white secondary button for escalation or other alternatives.
+
+4.7 Follow-up conversations
+The assistant must support multiple messages in the same session.
+
+When the employee reports that a recommended solution did not work, the assistant should acknowledge the result and suggest the next relevant troubleshooting step.
+
+Follow-up responses should reuse the same assistant panel, step cards, source references, and action patterns.
+
+Avoid repeating the entire initial explanation when only a small clarification or additional step is required.
+
+4.8 Suggested queries
+Above the message composer, display a small row of optional suggested queries.
+
+Examples:
+
+Reset account authentication
+Fix Docker memory issues
+Troubleshoot email synchronisation
+Resolve VPN connectivity
+Each suggestion should be a small, rounded, neutral pill.
+
+Selecting a suggestion should populate or submit the corresponding question, depending on the interaction design.
+
+Suggested queries should remain secondary to the conversation and should not compete with the main content.
+
+4.9 Message composer
+The message composer should remain anchored at the bottom of the workspace.
+
+Use a wide white container with rounded corners and a subtle border.
+
+It should include:
+
+Attachment button.
+Text input or expanding textarea.
+Optional voice-input button, if implemented.
+Black Send button with an arrow icon.
+A small footer indicating that responses are grounded in approved IT documentation.
+Placeholder:
+
+“Ask Copilot anything or describe your IT issue...”
+
+The input should support multiline messages. Pressing Enter should send the message, while Shift+Enter should insert a new line.
+
+On submission, the employee's message should appear immediately, followed by a loading or response-generation state. The layout should automatically scroll to the latest conversation.
+
+5. My Tickets Screen
+The My Tickets page allows employees to review the support requests they have created.
+
+It should reuse the same sidebar, top navigation, cream background, typography, and pill-shaped controls.
+
+Page heading
+My Tickets
+
+Supporting text:
+
+“Track your requests and see the latest updates from IT support.”
+
+Place a black “Create Ticket” button on the right.
+
+Ticket summary
+At the top, show a small number of useful summary cards:
+
+Open Tickets
+In Progress
+Awaiting Your Response
+Resolved
+Use white or soft beige cards with minimal borders and simple icons. Avoid charts, decorative graphs, and unnecessary performance metrics.
+
+Ticket list
+Display tickets in a clean table or vertically stacked list.
+
+Each ticket should show:
+
+Ticket ID.
+Issue title.
+Category.
+Priority.
+Status.
+Last updated.
+View details action.
+Use compact pill-shaped status indicators. For example, a muted yellow badge for awaiting action, lavender for in progress, and pale green for resolved.
+
+Include a search field and simple filters for ticket status and priority.
+
+Selecting a ticket should open its detail page, where the employee can read updates, view attachments, respond to engineer questions, and see the resolution notes.
+
+Use an empty state when no tickets exist, with a clear “Create your first ticket” action.
+
+6. Create Ticket Screen
+The Create Ticket screen should provide a simple way to report an IT issue manually or convert an unresolved AI conversation into a ticket.
+
+Page heading
+Create a Support Ticket
+
+Supporting text:
+
+“Tell us what went wrong so the IT team can help you resolve it.”
+
+Form fields
+Include the following fields:
+
+Issue title.
+Detailed description.
+Category.
+Affected application or service.
+Priority or impact.
+Optional file attachments.
+When a ticket originates from the AI Assistant, prefill the issue title, description, category, and relevant troubleshooting history where appropriate.
+
+Allow employees to review and edit the information before submitting.
+
+AI assistance
+If NLP classification is available, the system may suggest a category and priority based on the issue description.
+
+Display these as editable recommendations rather than final decisions.
+
+For example:
+
+“Suggested category: Network and Connectivity”
+
+Employees should be able to change the suggested category if it is incorrect.
+
+Submission
+Use a black primary button labelled “Submit Ticket” and a white secondary button labelled “Cancel”.
+
+After successful submission, display the ticket ID and a link to the new ticket's detail page.
+
+The form should be straightforward and avoid exposing internal routing rules, confidence calculations, or technical processing stages.
+
+7. Knowledge Base Screen
+The Knowledge Base allows employees to find approved IT documentation without starting a conversation.
+
+Page heading
+Knowledge Base
+
+Supporting text:
+
+“Find verified guides and solutions for common IT issues.”
+
+Search
+Place a prominent search field near the top of the page.
+
+Placeholder:
+
+“Search for an issue, application, error code, or solution...”
+
+If semantic search is implemented, the search should support natural-language questions rather than relying exclusively on exact keyword matches.
+
+Categories
+Display a small collection of easy-to-understand categories:
+
+Network and VPN
+Accounts and Access
+Email and Collaboration
+Hardware and Devices
+Software and Applications
+Security and Permissions
+Use simple icons and white rounded cards. Keep the number of categories manageable.
+
+Article list
+Each article card should display:
+
+Article title.
+Short summary.
+Category.
+Last updated date.
+Optional verified label.
+Selecting an article opens a readable article page with troubleshooting instructions, prerequisites, warnings, and related articles.
+
+Include a “Ask Copilot about this” action to continue troubleshooting in the AI Assistant.
+
+Only authorised, approved documentation should be presented as verified guidance.
+
+8. Chat History Screen
+Chat History allows employees to revisit previous support conversations.
+
+Page heading
+Chat History
+
+Supporting text:
+
+“Return to previous conversations and continue troubleshooting.”
+
+Conversation list
+Display a simple searchable list of conversations.
+
+Each item should include:
+
+Conversation title or detected issue.
+Date and last activity.
+Associated ticket, if any.
+Resolution state, where known.
+Provide filters for recent conversations, resolved issues, and unresolved issues.
+
+Selecting a conversation should reopen the transcript in a readable format.
+
+The employee should be able to continue an unresolved conversation or create a ticket from it.
+
+Keep the page visually simple, using white list items against the cream workspace.
+
+9. Ticket Details Screen
+The Ticket Details screen provides a complete view of an individual support request.
+
+Header
+Display the ticket ID and issue title, followed by a compact status indicator.
+
+Include actions such as “Back to My Tickets” and, when appropriate, “Add Comment”.
+
+Ticket information
+Show:
+
+Description.
+Category and priority.
+Creation date.
+Current status.
+Assigned support team or engineer, if available.
+Relevant attachments.
+Activity timeline
+Display the ticket's history as a chronological timeline.
+
+Include employee comments, engineer updates, status changes, and resolution notes.
+
+Use clear labels and timestamps rather than complex visualisations.
+
+AI-generated information
+If the ticket originated from an AI conversation, show a concise summary of the attempted troubleshooting steps.
+
+Include relevant source references where appropriate.
+
+Do not show internal prompts, raw model outputs, private system logs, or restricted engineering information to employees.
+
+10. Employee Settings Screen
+The Settings screen should provide only the preferences employees need.
+
+Include:
+
+Profile information.
+Notification preferences.
+Appearance preferences, if supported.
+Account and session options.
+Use simple forms with clear labels and a consistent Save Changes button.
+
+Keep account security and administrative settings separate from employee preferences.
+
+11. Analytics Screen
+Analytics should only appear for roles that are authorised to view support statistics. If employees do not need access, reserve it for administrators or support engineers.
+
+The screen can show useful aggregate information, such as:
+
+Number of tickets created.
+Ticket resolution rates.
+Common issue categories.
+Knowledge base usage.
+AI-assisted resolution rates.
+Use a few simple charts and summary cards, following the same restrained colour palette.
+
+Avoid filling the screen with charts, confidence scores, model latency, token counts, or technical AI monitoring data unless those details serve a specific operational need.
+
+12. Role-Based Interface
+The application should adapt its navigation and accessible actions according to the signed-in user's role.
+
+Employee
+Employees can:
+
+Chat with the AI Assistant.
+Search the Knowledge Base.
+Create and track support tickets.
+View and continue chat history.
+Respond to requests for additional information.
+Confirm whether a suggested solution worked.
+IT Support Engineer
+Engineers can:
+
+View assigned and available tickets.
+Review issue details and troubleshooting history.
+Update ticket status and priority.
+Add internal notes and employee-facing responses.
+Review relevant knowledge base references.
+Escalate or reassign tickets.
+Add verified solutions to the knowledge base, if authorised.
+Administrator
+Administrators can:
+
+Manage users and roles.
+Configure categories, priorities, and routing rules.
+Manage knowledge base content and approvals.
+Review support analytics.
+Configure system-level settings.
+The interface should never show administrative actions to employees who lack permission to use them.
+
+13. Core User Flows
+Flow A: Employee resolves an issue using AI
+Employee signs in.
+The AI Assistant opens automatically.
+Employee describes the IT problem.
+NLP identifies the issue type and relevant details.
+RAG retrieves relevant approved documentation.
+The LLM generates a grounded response with troubleshooting steps and references.
+Employee follows the suggested steps.
+Employee confirms whether the issue is resolved.
+The system records the outcome and offers feedback.
+Flow B: AI cannot resolve the issue
+Employee describes the problem in the AI Assistant.
+The system retrieves relevant guidance and suggests troubleshooting steps.
+Employee reports that the issue persists or selects “Escalate to Engineer”.
+The system opens the Create Ticket screen.
+The conversation summary and relevant details are prefilled.
+Employee reviews and submits the ticket.
+The system creates the ticket and displays its ID.
+Employee can track progress in My Tickets.
+Flow C: Employee searches the Knowledge Base
+Employee opens Knowledge Base.
+Employee searches using a keyword, error code, or natural-language question.
+The system returns relevant articles.
+Employee opens a result and follows the instructions.
+If additional help is needed, the employee continues with Copilot.
+Flow D: Employee follows up on an existing issue
+Employee opens Chat History or My Tickets.
+Employee selects a previous conversation or ticket.
+The system displays the relevant transcript or ticket timeline.
+Employee continues troubleshooting or responds to an engineer.
+Any new updates are saved and displayed in the appropriate location.
+14. Technical Implementation
+Frontend
+Next.js using the App Router.
+JavaScript and JSX, without TypeScript.
+Tailwind CSS for styling.
+Lucide React for consistent icons.
+Reusable layout, navigation, button, status, and card components.
+Backend and AI architecture
+NLP for issue understanding, intent detection, and categorisation.
+RAG for retrieving relevant approved knowledge base content.
+An LLM for composing contextual responses from retrieved sources.
+A backend API for chat sessions, ticket creation, ticket status, and knowledge base retrieval.
+A database for users, tickets, conversations, messages, and knowledge base metadata.
+The frontend should communicate with the backend through defined API endpoints. The AI processing pipeline should remain separate from the UI components.
+
+During initial development, mock data can be used to implement and test the screens before integrating the actual AI pipeline.
+
+Suggested reusable components
+AppSidebar
+TopNavigation
+PageHeader
+SearchBar
+ChatMessage
+AssistantResponse
+TroubleshootingStep
+CodeCommandBlock
+KnowledgeSource
+StatusBadge
+TicketList
+TicketForm
+EmptyState
+ChatComposer
+ConfirmationDialog
+Reusable components should maintain consistent styling and behaviour across the application.
+
+15. Usability and Accessibility Requirements
+The interface must be easy to understand for employees with different levels of technical knowledge.
+
+Use plain language and action-oriented labels.
+Make buttons visually distinguishable from informational elements.
+Ensure keyboard navigation and visible focus states.
+Provide accessible names for icon-only buttons.
+Maintain sufficient contrast between text and backgrounds.
+Make forms understandable through clear labels and validation messages.
+Provide loading, success, error, and empty states.
+Confirm important actions, such as ticket submission and issue resolution.
+Ensure responsive behaviour on desktop, tablet, and mobile.
+Avoid relying exclusively on colour to communicate ticket status.
+Make sources and suggested solutions easy to identify.
+The interface should explain what an employee needs to do next without requiring them to understand NLP, RAG, embeddings, or LLM terminology.
+
+16. Final Design Principle
+The defining characteristic of PowerGrid Copilot should be its warm, minimal, conversation-first workspace.
+
+The cream background, black rounded sidebar, white navigation pill, beige response panels, soft pastel indicators, and black pill-shaped action buttons should create a consistent visual identity across the application.
+
+The AI Assistant should remain the centre of the employee experience. Supporting features should be easy to discover, while ticket management, knowledge retrieval, and chat history should follow the same visual language.
+
+Every screen should answer three questions clearly:
+
+Where am I in the application?
+What information do I need here?
+What should I do next?
+The goal is not to make the application look more technical or more AI-powered. The goal is to make IT support feel clear, trustworthy, approachable, and effortless.
