@@ -7,105 +7,233 @@
 
 ---
 
-## 1. Overview
-
-**AI IT Helpdesk Copilot** (branded as **PowerGrid Copilot**) is an intelligent enterprise IT support solution that combines Natural Language Processing (NLP), Retrieval-Augmented Generation (RAG), and rule-based workflow automation. It enables employees to resolve technical issues through guided, step-by-step troubleshooting, access verified organizational runbooks, and escalate unresolved incidents into structured support tickets.
-
-The system features three interconnected, role-based portals sharing a single synchronized data lifecycle:
-1. **Employee Portal (Self-Service & AI Copilot)**
-2. **IT Support Engineer Portal (Triage, AI Intelligence & Remediation)**
-3. **Administrator / Operations Manager Portal (Analytics, RBAC & SLA Policy)**
-
----
-
-## 2. Technology Stack
-
-As defined in the project architecture specification:
-
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend** | React 19, TypeScript, Tailwind CSS (v4), Lucide React, Motion |
-| **Design System** | Warm Ivory (`#FFFAED`), Near-Black Sidebar (`#1B1B1B`), Soft Beige Panels (`#F3EEDF`), Plus Jakarta Sans |
-| **Backend Architecture** | Node.js, Express, TypeScript, RESTful API endpoints |
-| **Database Architecture** | PostgreSQL with `pgvector` extension for embedding-based knowledge retrieval |
-| **AI Architecture** | NLP classifier (intent & category prediction), priority inference engine, RAG runbook retrieval, cloud LLM integration |
-| **Development Tools** | Vite, VS Code, Git, GitHub, Postman |
+## Table of Contents
+1. [Quickstart: Install & Run](#1-quickstart-install--run)
+2. [Project Overview & Architecture](#2-project-overview--architecture)
+3. [Structure of the Demo Services](#3-structure-of-the-demo-services)
+   - [Centralized State & Demo Store (`demoStore.ts`)](#centralized-state--demo-store-demostorets)
+   - [Replaceable AI Service Interface (`aiService.ts`)](#replaceable-ai-service-interface-aiservicets)
+   - [Data Models & TypeScript Entities (`src/types/index.ts`)](#data-models--typescript-entities-srctypesindexts)
+4. [Demo Accounts & Role Credentials](#4-demo-accounts--role-credentials)
+5. [Guide for Project Review & Walkthrough](#5-guide-for-project-review--walkthrough)
+6. [Design System & UI/UX Tokens](#6-design-system--uiux-tokens)
+7. [Directory Structure](#7-directory-structure)
 
 ---
 
-## 3. Demo Credentials (For Evaluation & Review)
+## 1. Quickstart: Install & Run
 
-The application includes predefined demonstration accounts with 1-click credential auto-fill on the sign-in screen:
-
-| Role | Email Address | Password | Permissions |
-| :--- | :--- | :--- | :--- |
-| **Employee** | `employee@helpdesk.demo` | `Employee@123` | AI troubleshooting, personal ticket logging, KB search, CSAT feedback |
-| **IT Engineer** | `engineer@helpdesk.demo` | `Engineer@123` | Queue management, SLA tracking, AI intelligence panel, KB runbook drafting |
-| **Admin / Manager**| `admin@helpdesk.demo` | `Admin@123` | Global dashboard, ticket reassignment, priority overrides, RBAC, SLA policies, KB approvals |
-
-*Note: For evaluation walkthroughs, you can also use the top demonstration banner to toggle between roles instantly without re-typing passwords.*
-
----
-
-## 4. Setup and Run Instructions
+Follow these simple steps to run the application locally:
 
 ### Prerequisites
-- **Node.js**: Version `18.x` or `20.x` or later
-- **npm**: Version `9.x` or later (or `pnpm` / `yarn`)
+- **Node.js**: `v18.x`, `v20.x`, or higher installed (`node -v`)
+- **npm**: `v9.x` or higher installed (`npm -v`)
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/Shivani2965/helpdesk-.git
-cd helpdesk-
-```
-
-### 2. Install Dependencies
+### Step 1: Install Dependencies
+Open your terminal in the project root directory and run:
 ```bash
 npm install
 ```
 
-### 3. Environment Variables Configuration
-Copy the sample environment file to create your local `.env`:
+### Step 2: Environment Variables
+Create your local environment file by copying the template:
 ```bash
 cp .env.example .env
 ```
+*(No external API keys are required for the review prototype; the built-in AI triage service and demo store run locally out-of-the-box).*
 
-Default contents of `.env`:
-```env
-# GEMINI_API_KEY: Optional key for live Gemini cloud LLM inference
-GEMINI_API_KEY=""
-
-# APP_URL: Local development host URL
-APP_URL="http://localhost:3000"
-```
-
-### 4. Run the Development Server
+### Step 3: Start the Development Server
 ```bash
 npm run dev
 ```
-The application will start on **`http://localhost:3000`** (or the port specified in your console).
-
-### 5. Build for Production
-To create an optimized production build:
-```bash
-npm run build
+Once the dev server starts, open your browser and navigate to:
 ```
-The compiled assets will be output to the `dist/` folder.
-
-### 6. Preview Production Build
-```bash
-npm run preview
+http://localhost:3000
 ```
 
-### 7. Run Code Quality & Lint Checks
-```bash
-npm run lint
-```
-Runs the TypeScript compiler (`tsc --noEmit`) to verify zero type errors.
+### Additional Available Scripts
+- `npm run build`: Compiles the production build into the `dist/` folder.
+- `npm run preview`: Previews the compiled production build locally.
+- `npm run lint`: Runs TypeScript static type checking (`tsc --noEmit`).
 
 ---
 
-## 5. Project Directory Structure
+## 2. Project Overview & Architecture
+
+**AI IT Helpdesk Copilot** (branded as **PowerGrid Copilot**) is an intelligent enterprise IT support solution designed for government utilities and large enterprises under Smart India Hackathon problem statement **SIH25195**.
+
+### Three Core Architectural Pillars:
+1. **Natural Language Processing (NLP)**: Understands user incident reports, extracts keywords, maps them to IT domains, and infers severity priority.
+2. **Retrieval-Augmented Generation (RAG)**: Retrieves approved technical runbooks and historical resolutions to generate step-by-step diagnostic actions.
+3. **Role-Based Workflow Automation**: Manages a shared ticket lifecycle across Employees, IT Engineers, and Administrators with SLA deadline tracking.
+
+### System Architecture Diagram
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        AI IT Helpdesk Copilot                          │
+├───────────────────┬──────────────────────┬─────────────────────────────┤
+│  Employee Portal  │  IT Engineer Portal  │   Administrator Portal      │
+│  - AI Copilot     │  - Queue Workload    │   - Operations Analytics    │
+│  - Step Checkpoint│  - AI Intelligence   │   - Ticket Reassignment     │
+│  - Ticket Logging │  - SLA Deadlines     │   - User Role (RBAC)        │
+│  - CSAT Feedback  │  - KB Runbook Draft  │   - Routing & SLA Config    │
+└─────────┬─────────┴──────────┬───────────┴──────────────┬──────────────┘
+          │                    │                          │
+          ▼                    ▼                          ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│               Centralized Demo Store (demoStore.ts)                    │
+│   - localStorage Persistence & Reactive Event Subscriptions            │
+│   - Shared Ticket Lifecycle (Open → Assigned → In Progress → Resolved) │
+│   - Audit Trail Recording & SLA Urgency Monitoring                     │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│             Replaceable AI Service Interface (aiService.ts)            │
+│   1. understandAndClassify()        4. retrieveSimilarTickets()        │
+│   2. suggestPriority()              5. generateResolutionDirection()   │
+│   3. retrieveTroubleshootingSteps() 6. summarizeTicket()               │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 3. Structure of the Demo Services
+
+The application isolates all backend data persistence, business logic, and AI inference into two modular TypeScript services located in `src/services/`. This ensures the frontend prototype can later be seamlessly connected to a live Node.js/Express REST API and PostgreSQL database without restructuring UI components.
+
+### Centralized State & Demo Store (`demoStore.ts`)
+
+The `DemoStore` singleton acts as an in-memory and persistent client-side data store using `localStorage`. It implements an Observer Pattern (`subscribe`/`notify`) so that whenever data changes (e.g. an employee logs a ticket or an engineer marks one resolved), all active views update reactively without a page reload.
+
+#### Key Methods:
+| Method | Purpose |
+| :--- | :--- |
+| `authenticate(email, pass)` | Validates credentials against demo accounts or registered users; initializes session. |
+| `getCurrentUser()` / `setCurrentUser()` | Manages current session state and logs sign-in/out audit entries. |
+| `getTickets()` | Retrieves all tickets, initializing with preloaded sample tickets if empty. |
+| `getTicketById(id)` | Fetches a single ticket with full history, comments, and AI intelligence metadata. |
+| `createTicket(payload)` | Runs automated AI classification, assigns unique ID (e.g., `HD-1042`), maps default routing rule, calculates SLA deadline, and appends to store. |
+| `updateTicket(id, updates)` | Applies status transitions, category/priority overrides, or resolution notes. |
+| `addTicketComment(id, message, isInternal)` | Appends public comments or engineering-only internal notes. |
+| `rateTicketResolution(id, score, comment)` | Captures employee CSAT ratings (1–5 stars) for resolved tickets. |
+| `getKnowledgeArticles()` | Retrieves approved runbooks and pending engineer drafts. |
+| `createKnowledgeArticle(payload)` | Creates an article draft (status: `draft_pending_approval`) from a verified ticket resolution. |
+| `updateKnowledgeArticleStatus(id, status)` | Admin action to approve or reject pending runbook drafts. |
+| `getAuditLogs()` / `addAuditLog()` | Maintains an immutable chronological log of actions, actors, and targets. |
+| `getRoutingRules()` / `getSLAConfigs()` | Reads and updates automated dispatch rules and SLA hour matrices. |
+| `resetDemoData()` | Resets all entities to factory demo dataset with 1-click confirmation. |
+
+---
+
+### Replaceable AI Service Interface (`aiService.ts`)
+
+Adheres strictly to the **six-function AI service specification** defined in the project architecture:
+
+1. **`understandAndClassify(text: string)`**:
+   - Performs NLP keyword and intent parsing.
+   - Categorizes into: `Printing & Peripherals`, `Network & VPN`, `Security & Credentials`, `Software & Access`, `Hardware`, or `Email & Communication`.
+   - Returns confidence score and affected service endpoint.
+
+2. **`suggestPriority(text, category, scope)`**:
+   - Evaluates operational impact, outage terms, and affected users.
+   - Returns priority (`Critical`, `High`, `Medium`, `Low`) and a written rationale.
+
+3. **`retrieveTroubleshootingSteps(text, category)`**:
+   - Retrieves structured, step-by-step diagnostic procedures.
+   - Supplies actionable checks, instructions, and terminal commands.
+
+4. **`retrieveSimilarTicketsAndArticles(text, category)`**:
+   - Simulates RAG vector similarity to historical incident resolutions and verified Knowledge Base IDs.
+
+5. **`generateResolutionDirection(ticket)`**:
+   - Formulates engineering guidance, root cause hypotheses, and recommended fixes for L2/L3 engineers.
+
+6. **`summarizeTicket(ticket)`**:
+   - Generates executive 2-line handover summaries for queues and shift reports.
+
+---
+
+### Data Models & TypeScript Entities (`src/types/index.ts`)
+
+- **`User`**: `id`, `name`, `email`, `role ('employee' | 'engineer' | 'admin')`, `department`, `activeStatus`.
+- **`Ticket`**:
+  - `id`: Unique stable identifier (e.g. `HD-1041`)
+  - `title`, `description`, `affectedService`
+  - `category` vs. `aiSuggestedCategory` vs. `confirmedCategory` (preserves human override vs. AI proposal)
+  - `priority` vs. `aiSuggestedPriority` vs. `confirmedPriority`
+  - `status`: `'Open' | 'Assigned' | 'In Progress' | 'Pending' | 'Resolved' | 'Closed' | 'Escalated'`
+  - `slaHours`, `slaDeadline`, `slaBreached`
+  - `aiIntelligence`: Summary, root cause hypothesis, suggested resolution, similar past tickets
+  - `comments`: Threaded comments with `isInternal` flag for engineer-only notes
+  - `resolutionNotes`: Formal fix summary
+  - `satisfactionRating`: 1–5 star CSAT score with feedback comment
+- **`KnowledgeArticle`**: `id`, `title`, `category`, `steps`, `status ('published' | 'draft_pending_approval' | 'rejected')`, `helpfulCount`.
+- **`AuditLogEntry`**: `timestamp`, `actorName`, `actorRole`, `action`, `targetType`, `targetId`, `details`.
+- **`RoutingRule` & `SLAConfig`**: Category triggers, default assignees, and response/resolution hour targets.
+
+---
+
+## 4. Demo Accounts & Role Credentials
+
+For university viva presentations and evaluation reviews, three public demonstration accounts are configured:
+
+| Role Account | Email Address | Password | Intended Workflow |
+| :--- | :--- | :--- | :--- |
+| **Employee** | `employee@helpdesk.demo` | `Employee@123` | Self-service AI chat, diagnostic checkpoints, personal ticket tracking, CSAT rating |
+| **IT Engineer** | `engineer@helpdesk.demo` | `Engineer@123` | Workload queue, SLA urgency sorting, AI Intelligence panel, ticket resolution, runbook drafting |
+| **Admin / Manager** | `admin@helpdesk.demo` | `Admin@123` | Operational metrics, category distribution, user RBAC management, SLA policy, runbook approvals |
+
+> **Pro-Tip for Evaluators:** Click any of the 3 role buttons on the login card to auto-fill credentials instantly, or use the role switcher on the top demo banner to switch personas in real-time.
+
+---
+
+## 5. Guide for Project Review & Walkthrough
+
+Use this verified 16-step script to demonstrate the complete end-to-end system during your academic viva:
+
+| Step | Action | What to Demonstrate & Explain |
+| :---: | :--- | :--- |
+| **1** | **Open App** | Show the clean sign-in screen matching the warm ivory and near-black design language. |
+| **2** | **Sign In as Employee** | Click the **Employee** card (`employee@helpdesk.demo`) and sign in. |
+| **3** | **Start AI Copilot** | The app opens to **AI Assistant Copilot**. Click the prompt pill `"Floor 3 printer spooler error"` or describe an issue. |
+| **4** | **Step Checkpoints** | Show how AI provides step-by-step guidance in white cards. Click **✓ Worked** or **✗ Failed** on steps. |
+| **5** | **Escalate to Ticket** | Click **No, Create Support Ticket**. Point out that the ticket title, description, category, and troubleshooting history are pre-filled by AI. Click **Submit Ticket**. |
+| **6** | **Record Ticket ID** | Note the newly generated ticket ID (e.g. `HD-1042`). |
+| **7** | **Switch to IT Engineer** | Use the top demo banner to switch to **IT Engineer** (`engineer@helpdesk.demo`). |
+| **8** | **Locate Ticket in Queue** | Open **My Queue**. Point out that the newly created ticket appears with an active SLA countdown timer. |
+| **9** | **AI Intelligence Panel** | Click **Triage & AI**. Highlight the clear separation between **AI Suggested** values and **Human Confirmed** values. |
+| **10** | **Engineer Overrides** | Click **Accept AI Suggestion** or click **Change Priority**. Assign the ticket to yourself and mark **In Progress**. |
+| **11** | **Resolve Ticket** | Click **✓ Mark Resolved**, enter official resolution notes, and confirm. |
+| **12** | **Draft Runbook** | Click **Draft Knowledge Base Article** from the resolution. Note that the draft is marked as *Pending Admin Approval*. |
+| **13** | **Switch to Employee** | Switch back to **Employee**. Open **My Tickets**, open the resolved ticket, read the resolution notes, and rate the resolution **5 stars**. |
+| **14** | **Switch to Admin** | Switch to **Admin / Manager** (`admin@helpdesk.demo`). |
+| **15** | **Verify Analytics & Approvals** | View the **Operations Dashboard**—KPI cards, category bar charts, and CSAT average reflect the resolved ticket. Open **Knowledge Base** to approve the engineer's draft runbook. |
+| **16** | **Inspect Audit Trail** | Open **Audit Trail** to demonstrate an immutable, chronological record of every action, actor, timestamp, and target entity. |
+
+---
+
+## 6. Design System & UI/UX Tokens
+
+The application follows the custom **PowerGrid Copilot** design specification:
+
+- **Main Workspace Background:** `#FFFAED` (Warm ivory)
+- **Sidebar Background:** `#1B1B1B` (Near-black panel with `rounded-3xl` corners and outer margins)
+- **Active Navigation Pill:** Pure white pill (`bg-white text-[#171717] rounded-full`) with `#F8D2E8` pink notification pill
+- **AI Conversation Panels:** `#F3EEDF` (Soft beige container)
+- **Employee Message Panels:** `#F7F2E4` (Cream-beige container)
+- **Primary Buttons:** High-contrast `#080808` rounded pills (`rounded-full`) with `#FFFFFF` text
+- **Secondary Buttons:** White / cream rounded pills with subtle `#EDE6D6` hairline borders
+- **Pastel Status Accents:**
+  - Lavender (`#EBDDF5`): Assistant identity and *In Progress* tickets
+  - Pink (`#F8D2E8`): Brand lightning icon and *Escalated* incidents
+  - Yellow (`#F6E58D`): Step number badges and *Pending / Awaiting Action*
+  - Pale Green (`#DDECCB`): Verified runbooks and *Resolved* status
+- **Typography:** `Plus Jakarta Sans` for clean, approachable enterprise readability
+
+---
+
+## 7. Directory Structure
 
 ```
 ├── .env.example               # Environment variables template
@@ -114,7 +242,7 @@ Runs the TypeScript compiler (`tsc --noEmit`) to verify zero type errors.
 ├── package.json               # Dependencies and execution scripts
 ├── tsconfig.json              # TypeScript compilation configuration
 ├── vite.config.ts             # Vite configuration with Tailwind CSS plugin
-├── public/                    # Static assets
+├── README.md                  # Comprehensive documentation and setup guide
 └── src/
     ├── main.tsx               # React application mounting point
     ├── index.css              # Tailwind CSS imports & exact color tokens
@@ -152,54 +280,3 @@ Runs the TypeScript compiler (`tsc --noEmit`) to verify zero type errors.
             ├── KnowledgeBaseView.tsx   # Section 7: Verified runbooks & step-by-step guides
             └── ProfileSettingsView.tsx # Section 10: Profile preferences & availability status
 ```
-
----
-
-## 6. End-to-End Walkthrough Demonstration Script (Viva / Evaluation)
-
-Follow these 16 steps during a live project review:
-
-1. **Sign In**: Open the app and click the **Employee** demo account card (`employee@helpdesk.demo`), then click **Sign In**.
-2. **AI Troubleshooting**: The app opens directly to the **AI Assistant Copilot**. Click the prompt pill `"Floor 3 printer spooler error"` or type your own issue.
-3. **Interactive Diagnostics**: Inspect the AI response panel with separate white step cards, yellow step badges, and dark code blocks. Click the **Worked** / **Failed** checkpoint buttons.
-4. **Escalate to Ticket**: Click **No, Create Support Ticket** (or **Escalate to Engineer**). Inspect the prefilled form with AI-predicted category and priority. Click **Submit Ticket**.
-5. **Verify Confirmation**: Note the generated ticket ID (e.g. `HD-1042`).
-6. **Switch to IT Engineer**: Use the top banner to switch to **IT Engineer** (`engineer@helpdesk.demo`).
-7. **Inspect Engineer Queue**: Locate the newly created ticket in the high-density queue with its SLA countdown timer.
-8. **AI Ticket Intelligence Panel**: Click **Review & AI** to open the ticket drawer. Note the separation between **AI-Suggested** and **Human-Confirmed** fields.
-9. **Engineer Actions**: Click **Accept AI Suggestion** (or modify category/priority), click **Assign to Myself**, and mark **In Progress**.
-10. **Resolve Ticket**: Click **Mark Resolved**, enter resolution notes (e.g., *"Replaced roller sensor scrap and restarted print spooler daemon"*), and confirm.
-11. **Draft Runbook**: Click **Draft Knowledge Base Article** from the resolution. Notice it is submitted as `draft_pending_approval`.
-12. **Switch to Employee**: Switch back to **Employee**. Open **My Tickets**, find the resolved ticket, view the engineer's notes, and submit a **5-star CSAT rating**.
-13. **Switch to Admin / Manager**: Switch to **Admin / Manager** (`admin@helpdesk.demo`).
-14. **Operations Dashboard**: Observe the live KPI cards, category distribution chart, and engineer workload stats updated from the live ticket.
-15. **Runbook Approval**: Navigate to **Knowledge Base** in the admin sidebar, review the engineer's draft, and click **Approve & Publish**.
-16. **Audit Trail**: Open **Audit Trail** to inspect chronological logging of all actions with exact timestamps, actors, and targets.
-
----
-
-## 7. UI/UX Design System Specification
-
-The application implements the custom design tokens specified in the project guidelines:
-
-- **Workspace Background:** `#FFFAED` (Warm ivory)
-- **Navigation Sidebar:** `#1B1B1B` (Near-black panel with `rounded-3xl` corners and outer margins)
-- **Active Navigation Pill:** White pill (`bg-white text-[#171717] rounded-full`) with `#F8D2E8` pink counter badges
-- **Conversation Panels:** `#F3EEDF` (Soft beige containers)
-- **User Message Panels:** `#F7F2E4` (Cream-beige containers)
-- **Primary Buttons:** High-contrast `#080808` rounded pills with `#FFFFFF` text
-- **Secondary Buttons:** White / cream rounded pills with `#EDE6D6` hairline borders
-- **Pastel Accents:**
-  - Lavender (`#EBDDF5`): Assistant identity and *In Progress* state
-  - Pink (`#F8D2E8`): Brand lightning icon and *Escalated* state
-  - Yellow (`#F6E58D`): Step number badges and *Pending / Awaiting Action* state
-  - Pale Green (`#DDECCB`): Verified runbooks and *Resolved* state
-- **Typography:** `Plus Jakarta Sans` for clean, approachable enterprise readability
-
----
-
-## 8. Resetting Demo Data
-
-To restore the original sample tickets, knowledge base articles, and audit logs during an evaluation:
-- Click the **"Reset Data"** button located on the top academic demo banner.
-- Confirm the dialog to instantly restore factory demo state.
